@@ -471,7 +471,7 @@ for i in range(sweep_kinetic_const.shape[0]):
     plt.step(steadytrace_time, count_transl)
     plt.ylabel('Number of completed mRNA translations')
     plt.xlabel('Time (s)')
-    plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Completed mRNA translations over time' % (
+    plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Translations completed over time interval' % (
     steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadykinetic_rates[3]))
 
     # save figure

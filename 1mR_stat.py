@@ -486,31 +486,9 @@ for i in range(sweep_kinetic_const.shape[0]):
     plt.step(steadytrace_time, count_transl)
     plt.ylabel('Number of completed mRNA translations')
     plt.xlabel('Time (s)')
-    plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Completed mRNA translations over time' % (
+    plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Translations completed over time interval' % (
         steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadykinetic_rates[3]))
 
     # save figure
     plt.savefig('C:/Users/fujitsu/Desktop/Y4 Project/1mR_stat/Completed Translations, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
-
-    # ######################################################
-    # # EXTRACTING PLOTS OF FREE POOLS
-    #
-    # # plot number of free ribosomes over time window
-    # plt.figure()
-    # plt.subplot(2, 1, 1)
-    # plt.step(steadytrace_time, steadytrace_ribo, hold=True)
-    # plt.xlabel('Time (s)')
-    # plt.ylabel('Number of Free Ribosomes')
-    # plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Free Ribosomes over time' %(steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))
-    #
-    # # plot number of free asRNA over time window
-    # plt.subplot(2, 1, 2)
-    # plt.step(steadytrace_time,steadytrace_asrna,hold=True)
-    # plt.xlabel('Time (s)')
-    # plt.ylabel('Number of Free asRNA')
-    # plt.title('Free asRNA over time')
-    #
-    # # save figure
-    # plt.tight_layout()
-    # plt.savefig('C:/Users/fujitsu/Desktop/Y4 Project/1mR_stat/Free pools, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
