@@ -437,6 +437,7 @@ for i in range(sweep_kinetic_const.shape[0]):
     plt.title('Free asRNA over time')
 
     # save figure
+    plt.tight_layout()
     plt.savefig('C:/Users/fujitsu/Desktop/Y4 Project/1mR_dyn/Free pools, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
