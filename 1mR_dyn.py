@@ -451,9 +451,6 @@ for i in range(sweep_kinetic_const.shape[0]):
     # extract count of completed translation
     for j in range(1, len(steadytrace_time)):
 
-        # time spent in state
-        time_in_state = steadytrace_time[j] - steadytrace_time[j - 1]
-
         # extract the state's stop codon
         state_stop_codon = steadytrace_mrna[((j + 1) * len(final_mrna)) - 1]
 
