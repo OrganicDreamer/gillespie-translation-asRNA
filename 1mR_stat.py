@@ -2,7 +2,9 @@ import numpy as np
 import random, math
 import matplotlib.pyplot as plt
 
+# 101 values describe the state of mRNA codons + RBS
 initial_mrna = np.zeros(101)
+
 free_ribo = 1
 free_asrna = 1
 
@@ -24,7 +26,7 @@ sweep_kinetic_const = np.array(
 # sweep over different rows of kinetic constants when simulating model:
 for i in range(sweep_kinetic_const.shape[0]):
 
-    def gillespie_1mR_dyn(mrna_state,free_ribo_pool,free_asrna_pool,start_time,sim_time,i = i):
+    def gillespie_1mR_stat(mrna_state,free_ribo_pool,free_asrna_pool,start_time,sim_time,i = i):
 
         # SETTING UP SIMULATION AND MODEL PARAMETERS
 
@@ -342,10 +344,10 @@ for i in range(sweep_kinetic_const.shape[0]):
     # RUNNING SIMULATION
 
     # simulate until steady state is reached
-    (trace_mrna, trace_ribo, trace_asrna,trace_time, steady_mrna, steady_ribo, steady_asrna, steady_time,kinetic_rates) = gillespie_1mR_dyn(initial_mrna,free_ribo,free_asrna,0,window_start_time)
+    (trace_mrna, trace_ribo, trace_asrna,trace_time, steady_mrna, steady_ribo, steady_asrna, steady_time,kinetic_rates) = gillespie_1mR_stat(initial_mrna,free_ribo,free_asrna,0,window_start_time)
 
     # simulate from steady state onwards
-    (steadytrace_mrna, steadytrace_ribo,steadytrace_asrna, steadytrace_time,final_mrna, final_ribo,final_asrna,final_time,steadykinetic_rates) = gillespie_1mR_dyn(steady_mrna,steady_ribo,steady_asrna,steady_time, window_end_time)
+    (steadytrace_mrna, steadytrace_ribo,steadytrace_asrna, steadytrace_time,final_mrna, final_ribo,final_asrna,final_time,steadykinetic_rates) = gillespie_1mR_stat(steady_mrna,steady_ribo,steady_asrna,steady_time, window_end_time)
 
     #####################################################
 

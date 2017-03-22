@@ -2,7 +2,9 @@ import numpy as np
 import random, math
 import matplotlib.pyplot as plt
 
+# 101 values describe the state of mRNA codons + RBS
 initial_mrna = np.zeros(101)
+
 free_ribo = 150
 free_asrna = 150
 
