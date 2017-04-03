@@ -1,9 +1,11 @@
 # To use with PyCharm/IDE
 
-1) Download and unzip this folder
-2) Open .py files in this folder in Pycharm. Ensure .py scripts are opened with this folder as the directory.
-3) Select/specify Python Interpreter (Anaconda recommended) if necessary
-4) Use CTRL-A to select all and ALT-SHIFT-E to run script of choice in console
+1) Download and install <a href='https://www.jetbrains.com/pycharm/download/#section=windows'>PyCharm</a>
+2) <a href='https://www.continuum.io/downloads'>Download</a> and <a href='https://docs.continuum.io/anaconda/install'>install</a> Anaconda. 
+3) <a href='https://docs.continuum.io/anaconda/ide_integration#pycharm'>Set up PyCharm</a> to use Anaconda.
+4) Download and unzip this folder
+5) Open .py files in this folder in Pycharm. Ensure .py scripts are opened with this folder as the directory.
+6) Use CTRL-A to select all and ALT-SHIFT-E to run script of choice in console
 
 # To run headless/on server cluster (specifically for Windows)
 
