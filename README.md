@@ -1,8 +1,9 @@
 # To use with PyCharm/IDE
 
 1) Download and unzip this folder
-2) Open .py files in this directory in Pycharm and select Python Interpreter (Anaconda recommended)
-3) Use CTRL-A to select all and ALT-SHIFT-E to run script of choice in console
+2) Open .py files in this folder in Pycharm. Ensure .py scripts are opened with this folder as the directory.
+3) Select/specify Python Interpreter (Anaconda recommended) if necessary
+4) Use CTRL-A to select all and ALT-SHIFT-E to run script of choice in console
 
 # To run headless/on server cluster (specifically for Windows)
 
