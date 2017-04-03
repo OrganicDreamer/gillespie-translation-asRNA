@@ -1,5 +1,7 @@
 import numpy as np
 import random, math
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 
 # set specific directory to save output graphs to if desired (remember to include final '/' in directory path
