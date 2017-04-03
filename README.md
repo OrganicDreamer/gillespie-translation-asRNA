@@ -12,4 +12,4 @@
 
 4) Download and unzip this folder
 5) Using WinSCP,copy/move the files in the folder onto home directory on cluster
-6) Run bash script
+6) Run bash script (qsub thefile.sh)
