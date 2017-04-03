@@ -14,4 +14,4 @@
 3) Connect and log in to server using both
 4) Download and unzip this folder
 5) Using WinSCP,copy/move the files in the folder onto home directory on cluster
-6) Using PuTTY, run bash script from home directory on the command line (qsub runme.sh)
+6) Using PuTTY, run bash script from home directory on the command line (qsub runme.sh). Modify runme.sh to run different .py scripts as desired. Command line: qstat to monitor jobs on the cluster.
