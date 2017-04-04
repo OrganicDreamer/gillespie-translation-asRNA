@@ -37,7 +37,7 @@ for i in range(sweep_kinetic_const.shape[0]):
         # SETTING UP SIMULATION AND MODEL PARAMETERS
 
         # array of values describe the state of mRNA codons + RBS
-        current_mrna = mrna_state
+        current_mrna = np.copy(mrna_state)
 
         # Number of ribosomes:
         current_ribo = free_ribo_pool
