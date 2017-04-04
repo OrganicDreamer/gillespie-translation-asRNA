@@ -302,7 +302,7 @@ for i in range(sweep_kinetic_const.shape[0]):
             if (current_time + dt) > simulation_time:
 
                 current_time = simulation_time
-                current_mrna = current_mrna
+                current_mrna = np.copy(current_mrna)
                 current_ribo = current_ribo
                 current_asrna = current_asrna
 
@@ -335,7 +335,7 @@ for i in range(sweep_kinetic_const.shape[0]):
                         break
 
                 current_time = current_time + dt
-                current_mrna = new_mrna
+                current_mrna = np.copy(new_mrna)
                 current_ribo = new_ribo
                 current_asrna = new_asrna
 
