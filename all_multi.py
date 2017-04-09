@@ -4,6 +4,9 @@ import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 
+#####################################
+#INITIALIZE ALL PARAMETERS HERE#####
+
 # set specific directory to save output graphs to if desired (remember to include final '/' in directory path
 save_dir = ''
 
@@ -34,10 +37,22 @@ length_mrna = 101
 # each column of 101 values describes the state of an mRNA's codons + RBS
 initial_mrna = np.zeros((length_mrna,num_strands))
 
+# Translation initiation, elongation, completion rates
+start_transl = 1
+transl_rate = 1
+fin_transl = 0.01
+
+# Array of values for translation elongation rates of specific codons on mRNA, not including stop codon or RBS:
+codon_transl_rates = np.full((length_mrna - 2), transl_rate)
+
+# Set specific rate for specific codon(s), in this case 50th codon:
+codon_transl_rates[49] = 1
+
+##########################################################################
 # sweep over different rows of kinetic constants when simulating model:
 for i in range(sweep_kinetic_const.shape[0]):
 
-    def gillespie_multmR(mrna_state,free_ribo_pool,free_asrna_pool,start_time,sim_time,i = i):
+    def gillespie_multmR(mrna_state,free_ribo_pool,free_asrna_pool,start_time,sim_time, start_transl, fin_transl, codon_transl_rates, i = i):
 
         # SETTING UP SIMULATION AND MODEL PARAMETERS
 
@@ -62,17 +77,6 @@ for i in range(sweep_kinetic_const.shape[0]):
 
         k_asrna_bind = sweep_kinetic_const[i][2]
         asrna_unbind_rate = sweep_kinetic_const[i][3]
-
-        # Translation initiation, elongation, completion rates
-        start_transl = 1
-        transl_rate = 1
-        fin_transl = 0.01
-
-        # Array of values for translation elongation rates of specific codons on mRNA, not including stop codon or RBS:
-        codon_transl_rates = np.full((np.shape(current_mrna)[0] - 2), transl_rate)
-
-        # Set specific rate for specific codon(s), in this case 50th codon:
-        codon_transl_rates[49] = 1
 
         # Hold trajectory data:
         trace_asrna = np.array([current_asrna])
@@ -364,12 +368,12 @@ for i in range(sweep_kinetic_const.shape[0]):
 
     # simulate until steady state is reached
     (trace_mrna, trace_ribo, trace_asrna, trace_time, steady_mrna, steady_ribo, steady_asrna, steady_time,
-     kinetic_rates) = gillespie_multmR(initial_mrna, free_ribo, free_asrna, 0, window_start_time)
+     kinetic_rates) = gillespie_multmR(initial_mrna, free_ribo, free_asrna, 0, window_start_time, start_transl, fin_transl, codon_transl_rates)
 
     # simulate from steady state onwards
     (steadytrace_mrna, steadytrace_ribo, steadytrace_asrna, steadytrace_time, final_mrna, final_ribo, final_asrna,
      final_time, steadykinetic_rates) = gillespie_multmR(steady_mrna, steady_ribo, steady_asrna, steady_time,
-                                                          window_end_time)
+                                                          window_end_time, start_transl, fin_transl, codon_transl_rates)
 
     #####################################################
     # EXTRACTING PLOTS OF OCCUPANCY DISTRIBUTION
