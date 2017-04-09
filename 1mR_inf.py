@@ -464,6 +464,7 @@ for i in range(sweep_kinetic_const.shape[0]):
     plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Sequestered ribosomes over time' % (
         steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadykinetic_rates[3]))
 
+    plt.tight_layout()
     plt.savefig(
         '%sSequestered ribosomes, inf, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
@@ -502,5 +503,6 @@ for i in range(sweep_kinetic_const.shape[0]):
         steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadykinetic_rates[3]))
 
     # save figure
+    plt.tight_layout()
     plt.savefig('%sCompleted Translations, inf, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
