@@ -427,7 +427,7 @@ for i in range(sweep_kinetic_const.shape[0]):
 
     # save figure
     plt.tight_layout()
-    plt.savefig('%sOccupancy distribution, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
+    plt.savefig('%sOccupancy distribution, inf, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
     ######################################################
@@ -465,7 +465,7 @@ for i in range(sweep_kinetic_const.shape[0]):
         steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadykinetic_rates[3]))
 
     plt.savefig(
-        '%sSequestered ribosomes, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
+        '%sSequestered ribosomes, inf, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
     #####################################################
@@ -502,5 +502,5 @@ for i in range(sweep_kinetic_const.shape[0]):
         steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadykinetic_rates[3]))
 
     # save figure
-    plt.savefig('%sCompleted Translations, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
+    plt.savefig('%sCompleted Translations, inf, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
