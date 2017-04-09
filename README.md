@@ -20,6 +20,7 @@
 
 1) Download appropriate Windows installer for <a href ='http://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html'>PuTTY</a> 
 2) Open PuTTY and log in to the server.
-3) Modift
-3) Add bash script to queue from home directory on the command line (qsub RUN_THIS.sh). 
-4) Modify RUN_THIS.sh to add different  run different  scripts as desired. Command line: qstat to monitor jobs on the cluster.
+3) Copy/modify .py files to model desired simulation parameters.
+4) Copy/modify setup_run_py_script.sh so it targets the desired .py simulation(s) you want to run.
+5) Modify RUN_THIS.sh so it will add different setup_run_py_script.sh to run on the cluster simulataneously, if desired. 
+6) Add bash script to queue from home directory on the command line (qsub RUN_THIS.sh). Command line: qstat to monitor jobs on the cluster.
