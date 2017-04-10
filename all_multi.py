@@ -24,7 +24,7 @@ window_end_time = 3000
 sweep_kinetic_const = np.array(
     [
 
-    [1,0.5,0.15,0.1]
+    [1,1,30,5]
 
     ])
 
@@ -427,7 +427,7 @@ for i in range(sweep_kinetic_const.shape[0]):
     plt.bar(rna_sites, avg_asrna_occ, bar_width, yerr=std_asrna_occ, ecolor='r')
     plt.xlabel('Position along mRNA')
     plt.ylabel('Time spent occupied (s)')
-    plt.title('Mean asRNA occupancy along mRNA (Standard Deviation error')
+    plt.title('Mean asRNA occupancy along mRNA (Standard Deviation error)')
 
     # save figure
     plt.tight_layout()
