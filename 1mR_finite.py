@@ -27,7 +27,8 @@ window_end_time = 3000
 sweep_kinetic_const = np.array(
     [
 
-    [1,0,1,0.1]
+    [0.001,0.001,0,0],
+    [0.001,0.001,0.15,0.1]
 
     ])
 
@@ -363,11 +364,10 @@ for i in range(sweep_kinetic_const.shape[0]):
     # EXTRACTING PLOTS OF OCCUPANCY DISTRIBUTION
 
     # vector to keep track to total time site on mRNA is occupied
-    ribo_occ = np.zeros(np.shape(final_mrna))
-    asrna_occ = np.zeros(np.shape(final_mrna))
+    rna_occ_rec = np.zeros((len(final_mrna)))
 
     # vector of all positions along mRNA
-    rna_loc = np.arange(1, len(final_mrna) + 1, 1)
+    rna_loc = np.arange(1, len(rna_occ_rec) + 1, 1)
 
     # mRNA site occupancy by ribosome
     for j in range(1, len(steadytrace_time)):
@@ -382,10 +382,31 @@ for i in range(sweep_kinetic_const.shape[0]):
         for k in range(len(state_of_rna)):
 
             if state_of_rna[k] == 1:
-                ribo_occ[k] = ribo_occ[k] + time_in_state
+                rna_occ_rec[k] = rna_occ_rec[k] + time_in_state
+
+    # save time rna occupied by ribosome
+    ribo_occ = np.copy(rna_occ_rec)
+
+    # vector cleared to keep track to total time site on mRNA is occupied
+    rna_occ_rec = np.zeros((len(final_mrna)))
+
+    # mRNA site occupancy by asRNA
+    for j in range(1, len(steadytrace_time)):
+
+        # time spent in state
+        time_in_state = steadytrace_time[j] - steadytrace_time[j - 1]
+
+        # extract the state's rna occupancy
+        state_of_rna = steadytrace_mrna[((j - 1) * len(final_mrna)): j * len(final_mrna)]
+
+        # record time that was spent with rbs occupied by asRNA
+        for k in range(len(state_of_rna)):
 
             if state_of_rna[k] == -1:
-                asrna_occ[k] = asrna_occ[k] + time_in_state
+                rna_occ_rec[k] = rna_occ_rec[k] + time_in_state
+
+    # save time rna occupied by asrna over all trials
+    asrna_occ = np.copy(rna_occ_rec)
 
     # plot time spent at each spot on the rna
     plt.figure()
