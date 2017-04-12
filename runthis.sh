@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l walltime=03:00:00,mem=1gb
+#PBS -l walltime=72:00:00,mem=100gb
 
 ## select Python script to run, copy it and move to work directory:
 cp $HOME/1mR_finite.py $WORK ## select script to run here
