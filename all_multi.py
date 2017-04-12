@@ -311,7 +311,7 @@ for i in range(sweep_kinetic_const.shape[0]):
             esc_total = np.sum(next_rates)
 
             # Determine when next reaction occurs (ie. time interval):
-            dt = - (math.log(1 - random.random())) / esc_total
+            dt = float(- (math.log(1 - random.random())) / esc_total)
 
             # next event occurs after the end of simulation time
             if (current_time + dt) > simulation_time:

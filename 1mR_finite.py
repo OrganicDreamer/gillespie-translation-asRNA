@@ -85,7 +85,7 @@ for i in range(sweep_kinetic_const.shape[0]):
             free_asrna_bind_rate = k_asrna_bind * current_asrna
 
             # initialize vector to record possible next states' mRNA
-            next_mrna = np.array([])
+            next_mrna = np.array([current_mrna])
 
             # initialize vector to record possible next states' ribosome pool
             next_ribo = np.array([])
@@ -126,7 +126,7 @@ for i in range(sweep_kinetic_const.shape[0]):
                         next_rates = np.append(next_rates,possible_rate)
 
                         # store the 101 values describing state's mRNA
-                        next_mrna = np.append(next_mrna,possible_mrna)
+                        next_mrna = np.append(next_mrna,[possible_mrna],0)
 
                         # store the value describing state's ribosome pool
                         next_ribo = np.append(next_ribo,possible_ribo)
@@ -154,7 +154,7 @@ for i in range(sweep_kinetic_const.shape[0]):
                         next_rates = np.append(next_rates, possible_rate)
 
                         # store the 101 values describing the state's mRNA
-                        next_mrna = np.append(next_mrna, possible_mrna)
+                        next_mrna = np.append(next_mrna, [possible_mrna],0)
 
                         # store the value describing state's ribosome pool
                         next_ribo = np.append(next_ribo, possible_ribo)
@@ -185,7 +185,7 @@ for i in range(sweep_kinetic_const.shape[0]):
                         next_rates = np.append(next_rates, possible_rate)
 
                         # store the values describing the state's mRNA, ribosome pool and asRNA pool
-                        next_mrna = np.append(next_mrna, possible_mrna)
+                        next_mrna = np.append(next_mrna, [possible_mrna],0)
                         next_ribo = np.append(next_ribo, possible_ribo)
                         next_asrna = np.append(next_asrna, possible_asrna)
 
@@ -210,7 +210,7 @@ for i in range(sweep_kinetic_const.shape[0]):
                             next_rates = np.append(next_rates, possible_rate)
 
                             # store the values describing the state's mRNA, ribosome pool and asRNA pool
-                            next_mrna = np.append(next_mrna, possible_mrna)
+                            next_mrna = np.append(next_mrna, [possible_mrna],0)
                             next_ribo = np.append(next_ribo, possible_ribo)
                             next_asrna = np.append(next_asrna, possible_asrna)
 
@@ -234,7 +234,7 @@ for i in range(sweep_kinetic_const.shape[0]):
                         next_rates = np.append(next_rates, possible_rate)
 
                         # store the values describing the state's mRNA, ribosome pool and asRNA pool
-                        next_mrna = np.append(next_mrna, possible_mrna)
+                        next_mrna = np.append(next_mrna, [possible_mrna],0)
                         next_ribo = np.append(next_ribo, possible_ribo)
                         next_asrna = np.append(next_asrna, possible_asrna)
 
@@ -262,7 +262,7 @@ for i in range(sweep_kinetic_const.shape[0]):
                         next_rates = np.append(next_rates, possible_rate)
 
                         # store the values describing the state's mRNA, ribosome pool and asRNA pool
-                        next_mrna = np.append(next_mrna, possible_mrna)
+                        next_mrna = np.append(next_mrna, [possible_mrna],0)
                         next_ribo = np.append(next_ribo, possible_ribo)
                         next_asrna = np.append(next_asrna, possible_asrna)
 
@@ -286,7 +286,7 @@ for i in range(sweep_kinetic_const.shape[0]):
                         next_rates = np.append(next_rates, possible_rate)
 
                         # store the values describing the state's mRNA, ribosome pool and asRNA pool
-                        next_mrna = np.append(next_mrna, possible_mrna)
+                        next_mrna = np.append(next_mrna, [possible_mrna],0)
                         next_ribo = np.append(next_ribo, possible_ribo)
                         next_asrna = np.append(next_asrna, possible_asrna)
 
@@ -299,7 +299,7 @@ for i in range(sweep_kinetic_const.shape[0]):
             esc_total = np.sum(next_rates)
 
             # Determine when next reaction occurs (ie. time interval):
-            dt = - (math.log(1 - random.random())) / esc_total
+            dt = float((-math.log(1 - random.random())))/ esc_total
 
             # next event occurs after the end of simulation time
             if (current_time + dt) > simulation_time:
@@ -309,7 +309,7 @@ for i in range(sweep_kinetic_const.shape[0]):
                 current_ribo = current_ribo
                 current_asrna = current_asrna
 
-                trace_mrna = np.append(trace_mrna, current_mrna)
+                trace_mrna = np.append(trace_mrna, [current_mrna],0)
                 trace_ribo = np.append(trace_ribo, current_ribo)
                 trace_asrna = np.append(trace_asrna, current_asrna)
                 trace_time = np.append(trace_time, current_time)
@@ -332,7 +332,7 @@ for i in range(sweep_kinetic_const.shape[0]):
                     if sum_trans_rates > threshold:
 
                         # define next state
-                        new_mrna = next_mrna[len(current_mrna)*n:len(current_mrna)*(n+1)]
+                        new_mrna = next_mrna[n]
                         new_ribo = next_ribo[n]
                         new_asrna = next_asrna[n]
                         break
@@ -342,7 +342,7 @@ for i in range(sweep_kinetic_const.shape[0]):
                 current_ribo = new_ribo
                 current_asrna = new_asrna
 
-                trace_mrna = np.append(trace_mrna, current_mrna)
+                trace_mrna = np.append(trace_mrna, [current_mrna],0)
                 trace_ribo = np.append(trace_ribo, current_ribo)
                 trace_asrna = np.append(trace_asrna, current_asrna)
                 trace_time = np.append(trace_time, current_time)
