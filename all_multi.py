@@ -29,7 +29,7 @@ sweep_kinetic_const = np.array(
     ])
 
 #number of mRNA strands
-num_strands = 2
+num_strands = 1
 
 # 101 values describe the state of mRNA codons + RBS
 length_mrna = 101
@@ -104,7 +104,7 @@ for i in range(sweep_kinetic_const.shape[0]):
             next_rates = np.array([])
 
             # initialize vector to explore possible state changes of mRNA
-            possible_mrna = np.array(current_mrna)
+            possible_mrna = np.copy(current_mrna)
 
             # initialize variable to explore possible state changes of ribosome pool
             possible_ribo = current_ribo
@@ -113,9 +113,9 @@ for i in range(sweep_kinetic_const.shape[0]):
             possible_asrna = current_asrna
 
             # rules for next possible transitions and rates based on current state of mRNA strands:
-            for n in range(np.shape(current_mrna)[1]):
+            for i in range(np.shape(current_mrna)[0]):
 
-                for i in range(np.shape(current_mrna)[0]):
+                for n in range(np.shape(current_mrna)[1]):
 
                     # empty RBS
                     if (i == 0) and (current_mrna[i,n] == 0):
@@ -305,7 +305,7 @@ for i in range(sweep_kinetic_const.shape[0]):
                             possible_ribo = current_ribo
 
             # remove the first junk entry for the list of next mRNA states
-            next_mrna = next_mrna[1:]
+            next_mrna = np.copy(next_mrna[1:])
 
             # total transition rate to other states
             esc_total = np.sum(next_rates)
@@ -412,6 +412,11 @@ for i in range(sweep_kinetic_const.shape[0]):
 
     std_asrna_occ = np.std(asrna_occ,axis=1)
     std_ribo_occ = np.std(ribo_occ,axis=1)
+
+    if num_strands == 1:
+
+        avg_ribo_occ = np.copy(ribo_occ)
+        avg_asrna_occ = np.copy(asrna_occ)
 
     # plot time spent at each spot on the rna
     plt.figure()
@@ -553,7 +558,7 @@ for i in range(sweep_kinetic_const.shape[0]):
 
     # plot distribution of translations completed by each mrna
     plt.figure()
-    plt.hist(count_transl, bins=125)
+    plt.hist(avg_seq_ribo, bins=125)
     plt.ylabel('Number of mRNA strands')
     plt.xlabel('Average Sequestered ribosomes')
     plt.title(
