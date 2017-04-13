@@ -370,12 +370,13 @@ for i in range(sweep_kinetic_const.shape[0]):
     rna_loc = np.arange(1, len(rna_occ_rec) + 1, 1)
 
     # mRNA site occupancy by ribosome
+    # iterate over all state starting from 2nd one
     for j in range(1, len(steadytrace_time)):
 
-        # time spent in state
+        # time spent in previous state
         time_in_state = steadytrace_time[j] - steadytrace_time[j - 1]
 
-        # extract the state's rna occupancy
+        # extract the previous state's rna occupancy
         state_of_rna = steadytrace_mrna[((j - 1) * len(final_mrna)): j * len(final_mrna)]
 
         # record time that was spent with rbs/codons on the rna occupied
@@ -393,10 +394,10 @@ for i in range(sweep_kinetic_const.shape[0]):
     # mRNA site occupancy by asRNA
     for j in range(1, len(steadytrace_time)):
 
-        # time spent in state
+        # time spent in previous state
         time_in_state = steadytrace_time[j] - steadytrace_time[j - 1]
 
-        # extract the state's rna occupancy
+        # extract the previous state's rna occupancy
         state_of_rna = steadytrace_mrna[((j - 1) * len(final_mrna)): j * len(final_mrna)]
 
         # record time that was spent with rbs occupied by asRNA

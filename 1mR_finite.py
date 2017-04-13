@@ -27,7 +27,7 @@ window_end_time = 3000
 sweep_kinetic_const = np.array(
     [
 
-    [1,0,1,0.1]
+    [1,0,0,0]
 
     ])
 
@@ -370,12 +370,13 @@ for i in range(sweep_kinetic_const.shape[0]):
     rna_loc = np.arange(1, len(final_mrna) + 1, 1)
 
     # mRNA site occupancy by ribosome
+    #iterate over all states starting from 2nd state
     for j in range(1, len(steadytrace_time)):
 
-        # time spent in state
+        # time spent in previous state
         time_in_state = steadytrace_time[j] - steadytrace_time[j - 1]
 
-        # extract the state's rna occupancy
+        # extract the previous state's rna occupancy
         state_of_rna = steadytrace_mrna[((j - 1) * len(final_mrna)): j * len(final_mrna)]
 
         # record time that was spent with rbs/codons on the rna occupied

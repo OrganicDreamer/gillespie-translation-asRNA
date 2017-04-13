@@ -24,7 +24,7 @@ window_end_time = 3000
 sweep_kinetic_const = np.array(
     [
 
-    [1,0,1,0.1]
+    [1,0,0,0]
 
     ])
 
@@ -311,7 +311,7 @@ for i in range(sweep_kinetic_const.shape[0]):
             esc_total = np.sum(next_rates)
 
             # Determine when next reaction occurs (ie. time interval):
-            dt = - (math.log(1 - random.random())) / esc_total
+            dt = - float(math.log(1 - random.random())) / esc_total
 
             # next event occurs after the end of simulation time
             if (current_time + dt) > simulation_time:
@@ -386,25 +386,25 @@ for i in range(sweep_kinetic_const.shape[0]):
     asrna_occ = np.zeros(np.shape(final_mrna))
 
     # mRNA site occupancy by ribosome
-    # iterate over all states
+    # iterate over all states, starting from 2nd one
     for j in range(1, len(steadytrace_time)):
 
-        # time spent in state
+        # time spent in previous state
         time_in_state = steadytrace_time[j] - steadytrace_time[j - 1]
 
-        #iterate over all strands
-        for i in range(0, num_strands):
+        # extract mrna pool of previous state
+        state_of_mrna = steadytrace_mrna[j-1,:,:]
 
-            # extract each strand's occupancy in the state
-            state_of_strand = steadytrace_mrna[j,:,i]
+        #iterate over state's mrna pool
+        for i in range(0, num_strands):
+            for k in range(0,length_mrna):
 
             # record time that was spent with rbs/codons on the rna occupied
-            for k in range(len(state_of_strand)):
 
-                if state_of_strand[k] == 1:
+                if state_of_mrna[k,i] == 1:
                     ribo_occ[k,i] = ribo_occ[k,i] + time_in_state
 
-                if state_of_strand[k] == -1:
+                if state_of_mrna[k,i] == -1:
                     asrna_occ[k,i] = asrna_occ[k,i] + time_in_state
 
     avg_ribo_occ = np.mean(ribo_occ,axis=1)
@@ -529,17 +529,17 @@ for i in range(sweep_kinetic_const.shape[0]):
     # initialize count
     avg_seq_ribo = np.zeros(num_strands)
 
-    # iterate over all states
+    # iterate over all states, starting from 2nd state
     for j in range(1, len(steadytrace_time)):
 
-        # time spent in state
+        # time spent in previous state
         time_in_state = steadytrace_time[j] - steadytrace_time[j - 1]
 
-        # iterate over all strands in each state
+        # iterate over all strands in the previous state
         for n in range(0,num_strands):
 
-            # extract the each strand
-            strand_of_rna = steadytrace_mrna[j,:,n]
+            # extract each strand in the previous state
+            strand_of_rna = steadytrace_mrna[j-1,:,n]
 
             # initialize count of total ribosomes for the state
             count_ribo = 0
