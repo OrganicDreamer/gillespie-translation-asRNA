@@ -1,5 +1,6 @@
 #!/bin/bash
-#PBS -l walltime=72:00:00,mem=100gb
+#PBS -l walltime=72:00:00
+#PBS -l select=1:ncpus=1:mem=100gb
 
 ## select Python script to run, copy it and move to work directory:
 cp $HOME/all_multi.py $WORK ## select script to run here
