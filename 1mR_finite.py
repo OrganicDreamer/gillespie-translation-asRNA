@@ -407,7 +407,7 @@ for i in range(sweep_kinetic_const.shape[0]):
 
     # save figure
     plt.tight_layout()
-    plt.savefig('%sOccupancy distribution, finite, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
+    plt.savefig('%sOccupancy distribution, finite, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
     ######################################################
 
@@ -430,7 +430,7 @@ for i in range(sweep_kinetic_const.shape[0]):
 
     # save figure
     plt.tight_layout()
-    plt.savefig('%sFree pools, finite, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
+    plt.savefig('%sFree pools, finite, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
     #####################################################
@@ -468,5 +468,5 @@ for i in range(sweep_kinetic_const.shape[0]):
 
     # save figure
     plt.tight_layout()
-    plt.savefig('%sCompleted Translations, finite, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
+    plt.savefig('%sCompleted Translations, finite, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure

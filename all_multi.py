@@ -436,8 +436,8 @@ for i in range(sweep_kinetic_const.shape[0]):
 
     # save figure
     plt.tight_layout()
-    plt.savefig('%sOccupancy distribution,num strands %d, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (
-    save_dir,num_strands, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
+    plt.savefig('%sOccupancy distribution,%fs, num strands %d, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (
+    save_dir,window_end_time,num_strands, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
     steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
@@ -461,7 +461,7 @@ for i in range(sweep_kinetic_const.shape[0]):
 
     # save figure
     plt.tight_layout()
-    plt.savefig('%sFree pools, num strands %d, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,num_strands,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
+    plt.savefig('%sFree pools, %fs, num strands %d, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,window_end_time,num_strands,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
     #####################################################
@@ -503,8 +503,8 @@ for i in range(sweep_kinetic_const.shape[0]):
 
     # save figure
     plt.tight_layout()
-    plt.savefig('%sTotal Completed Translations, num strands %d, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (
-    save_dir, num_strands, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
+    plt.savefig('%sTotal Completed Translations, %fs, num strands %d, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (
+    save_dir, window_end_time, num_strands, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
     steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
@@ -518,8 +518,8 @@ for i in range(sweep_kinetic_const.shape[0]):
 
     # save figure
     plt.tight_layout()
-    plt.savefig('%sDistribution of Completed Translations, num strands %d, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (
-        save_dir,num_strands, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
+    plt.savefig('%sDistribution of Completed Translations, %fs, num strands %d, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (
+        save_dir,window_end_time,num_strands, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
         steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
@@ -568,7 +568,7 @@ for i in range(sweep_kinetic_const.shape[0]):
     # save figure
     plt.tight_layout()
     plt.savefig(
-        '%sDist. Sequestered Ribosomes, num strands %d, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (
-            save_dir, num_strands, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
+        '%sDist. Sequestered Ribosomes, %fs, num strands %d, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (
+            save_dir, window_end_time, num_strands, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
             steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
