@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 save_dir = ''
 
 # 101 values describe the state of mRNA codons + RBS
-length_mrna = 101
+length_mrna = 267
 initial_mrna = np.ones(length_mrna)
 
 free_ribo = 1
@@ -27,20 +27,20 @@ window_end_time = 3000
 sweep_kinetic_const = np.array(
     [
 
-    [1,10,0,0]
+    [1,1,0,0]
 
     ])
 
 # Translation initiation, elongation, completion rates
-start_transl = 1
-transl_rate = 1
+start_transl = 0.0833333333333333
+transl_rate = 15
 fin_transl = 0.01
 
 # Array of values for translation elongation rates of specific codons on mRNA, not including stop codon or RBS:
 codon_transl_rates = np.full((length_mrna - 2), transl_rate)
 
 # Set specific rate for specific codon(s), in this case 50th codon:
-codon_transl_rates[49] = 1
+codon_transl_rates[49] = transl_rate
 
 ####################################################################
 # sweep over different rows of kinetic constants when simulating model:
