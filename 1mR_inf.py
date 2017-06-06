@@ -12,7 +12,7 @@ save_dir = ''
 
 # 101 values describe the state of mRNA codons + RBS
 length_mrna = 267
-initial_mrna = np.ones(length_mrna)
+initial_mrna = np.zeros(length_mrna)
 
 free_ribo = 1
 free_asrna = 1
