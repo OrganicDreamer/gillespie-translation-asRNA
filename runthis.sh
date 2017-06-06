@@ -1,6 +1,7 @@
 #!/bin/bash
 #PBS -l walltime=72:00:00
 #PBS -l select=1:ncpus=1:mem=100gb
+#PBS -q pqtouldrid
 
 ## select Python script to run
 RUNFILE=1mR_inf.py

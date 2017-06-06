@@ -12,7 +12,7 @@ save_dir = ''
 
 # 101 values describe the state of mRNA codons + RBS
 length_mrna = 101
-initial_mrna = np.zeros(length_mrna)
+initial_mrna = np.ones(length_mrna)
 
 free_ribo = 1
 free_asrna = 1
@@ -27,8 +27,7 @@ window_end_time = 3000
 sweep_kinetic_const = np.array(
     [
 
-    [1,10,0,0],
-    [0.01,0.01,0,0]
+    [1,10,0,0]
 
     ])
 
