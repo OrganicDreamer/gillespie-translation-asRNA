@@ -34,6 +34,7 @@ sweep_kinetic_const = np.array(
 # Translation initiation, elongation, completion rates
 start_transl = 0.0833333333333333
 transl_rate = 15
+fin_transl = np.linspace(transl_rate/100,(10*transl_rate),transl_rate/100)
 
 # Array of values for translation elongation rates of specific codons on mRNA, not including stop codon or RBS:
 codon_transl_rates = np.full((length_mrna - 2), transl_rate)
