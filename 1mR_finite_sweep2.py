@@ -18,10 +18,10 @@ free_ribo = 6800
 free_asrna = 6800
 
 # time to presumably reach steady state:
-window_start_time = 9000
+window_start_time = 20000
 
 # final time to simulate until:
-window_end_time = 10000
+window_end_time = 21000
 
 # 2d array (n x 4) of kinetic constants where each row is: ribo bind, ribo unbind, asRNA bind, asRNA unbind:
 sweep_kinetic_const = np.array(
