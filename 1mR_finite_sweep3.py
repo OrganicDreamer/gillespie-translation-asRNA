@@ -15,7 +15,7 @@ length_mrna = 267
 initial_mrna = np.zeros(length_mrna)
 
 free_ribo = 6800
-free_asrna = 6800
+free_asrna = 100000
 
 # time to presumably reach steady state:
 window_start_time = 20000
@@ -23,18 +23,19 @@ window_start_time = 20000
 # final time to simulate until:
 window_end_time = 21000
 
-# 2d array (n x 4) of kinetic constants where each row is: ribo bind, ribo unbind, asRNA bind, asRNA unbind:
+# 2d array (n x 4) of kinetic constants where each row is: ribo bind, ribo unbind, asRNA bind:
 sweep_kinetic_const = np.array(
     [
 
-    [0.1,0.1,0,0]
+    [0.1,0.1,0.1]
 
     ])
+
 
 # Translation initiation, elongation, completion rates
 start_transl = 0.0833333333333333
 transl_rate = 15
-sweep_fin_transl = np.linspace(transl_rate/100,transl_rate,num=100)
+fin_transl = transl_rate/1000
 
 # Array of values for translation elongation rates of specific codons on mRNA, not including stop codon or RBS:
 codon_transl_rates = np.full((length_mrna - 2), transl_rate)
@@ -47,7 +48,7 @@ codon_transl_rates[49] = transl_rate
 # sweep over different rows of kinetic constants when simulating model:
 for i in range(sweep_kinetic_const.shape[0]):
 
-    def gillespie_1mR_dyn(mrna_state,free_ribo_pool,free_asrna_pool,start_time,sim_time, start_transl, fin_transl, codon_transl_rates,i = i):
+    def gillespie_1mR_dyn(mrna_state,free_ribo_pool,free_asrna_pool,start_time,sim_time, start_transl, fin_transl, codon_transl_rates,asrna_unbind_rate,i = i):
 
         # SETTING UP SIMULATION AND MODEL PARAMETERS
 
@@ -71,7 +72,6 @@ for i in range(sweep_kinetic_const.shape[0]):
         rib_unbind_rate = sweep_kinetic_const[i][1]
 
         k_asrna_bind = sweep_kinetic_const[i][2]
-        asrna_unbind_rate = sweep_kinetic_const[i][3]
 
         # Hold trajectory data:
         trace_asrna = np.array([current_asrna])
@@ -359,17 +359,17 @@ for i in range(sweep_kinetic_const.shape[0]):
     # store average flux of ribosomes in/out of queue at steady state:
     plot_ribo_flux = np.array([])
 
-    # store deterministic prediction of ribosome flux in/out at steady state:
-    plot_det_flux = np.array([])
+    # Range of asRNA unbind rates to sweep over
+    sweep_asrna_unbind = np.linspace(sweep_kinetic_const[i][2]/1000,100*sweep_kinetic_const[i][2], num=50)
 
     # parameter sweep slow codon rate:
-    for m in range(len(sweep_fin_transl)):
+    for m in range(len(sweep_asrna_unbind)):
 
         # simulate until steady state is reached
-        (trace_mrna, trace_ribo, trace_asrna,trace_time, steady_mrna, steady_ribo, steady_asrna, steady_time,kinetic_rates) = gillespie_1mR_dyn(initial_mrna,free_ribo,free_asrna,0,window_start_time, start_transl, sweep_fin_transl[m], codon_transl_rates)
+        (trace_mrna, trace_ribo, trace_asrna,trace_time, steady_mrna, steady_ribo, steady_asrna, steady_time,kinetic_rates) = gillespie_1mR_dyn(initial_mrna,free_ribo,free_asrna,0,window_start_time, start_transl, fin_transl, codon_transl_rates,sweep_asrna_unbind[m])
 
         # simulate from steady state onwards
-        (steadytrace_mrna, steadytrace_ribo,steadytrace_asrna, steadytrace_time,final_mrna, final_ribo,final_asrna,final_time,steadykinetic_rates) = gillespie_1mR_dyn(steady_mrna,steady_ribo,steady_asrna,steady_time, window_end_time, start_transl, sweep_fin_transl[m], codon_transl_rates)
+        (steadytrace_mrna, steadytrace_ribo,steadytrace_asrna, steadytrace_time,final_mrna, final_ribo,final_asrna,final_time,steadykinetic_rates) = gillespie_1mR_dyn(steady_mrna,steady_ribo,steady_asrna,steady_time, window_end_time, start_transl, fin_transl, codon_transl_rates, sweep_asrna_unbind[m])
 
         #####################################################
 
@@ -529,40 +529,30 @@ for i in range(sweep_kinetic_const.shape[0]):
         # store result for this iteration
         plot_ribo_flux = np.append(plot_ribo_flux, ribo_flux)
 
-        # deterministic ribosome flux out:
-        det_flux = sweep_fin_transl[m] * (transl_rate / (sweep_fin_transl[m] + transl_rate))
-
-        # store result for this iteration
-        plot_det_flux = np.append(plot_det_flux, det_flux)
-
     ######################################################################
     # GENERATE AND SAVE PARAMETER SWEEP PLOTS
     plt.figure()
-    plt.plot(sweep_fin_transl, plot_queue_len)
+    plt.plot(sweep_asrna_unbind, plot_queue_len)
     plt.ylabel('Number of ribosomes in queue')
-    plt.xlabel('Slow codon translation rate')
-    plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Queue length vs. slow codon rate' % (
-        steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadykinetic_rates[3]))
+    plt.xlabel('asRNA unbinding rate')
+    plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f \n Queue length vs. asRNA unbinding rate' % (
+        steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2]))
 
     plt.tight_layout()
     plt.savefig(
-        '%sQueue length sweep, fin, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (
-            save_dir, window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
-            steadykinetic_rates[3]))  # save the figure to file
+        '%sQueue length asrna sweep, fin, %fs, ribo bind %f, ribo unbind %f, asR bind %f.png' % (
+            save_dir, window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2]))  # save the figure to file
     plt.close()  # close the figure
 
     plt.figure()
-    plt.plot(sweep_fin_transl, plot_ribo_flux, 'b', label='Simulated flux', hold=True)
-    plt.plot(sweep_fin_transl, plot_det_flux, 'r', label='Deterministic flux', hold=True)
-    plt.legend(loc='upper right')
-    plt.ylabel('Ribosome flux out')
-    plt.xlabel('Slow codon translation rate')
-    plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Flux vs. slow codon rate' % (
-        steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadykinetic_rates[3]))
+    plt.plot(sweep_asrna_unbind, plot_ribo_flux)
+    plt.ylabel('Completed mRNA translations')
+    plt.xlabel('asRNA unbinding rate')
+    plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f \n Translation vs asRNA unbinding rate' % (
+        steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2]))
 
     plt.tight_layout()
     plt.savefig(
-        '%sFlux sweep, fin, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (
-            save_dir, window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
-            steadykinetic_rates[3]))  # save the figure to file
+        '%sFlux asrna sweep, fin, %fs, ribo bind %f, ribo unbind %f, asR bind %f.png' % (
+            save_dir, window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2]))  # save the figure to file
     plt.close()  # close the figure
