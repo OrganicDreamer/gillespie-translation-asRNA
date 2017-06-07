@@ -18,10 +18,10 @@ free_ribo = 1
 free_asrna = 1
 
 # time to presumably reach steady state:
-window_start_time = 2000
+window_start_time = 9000
 
 # final time to simulate until:
-window_end_time = 3000
+window_end_time = 10000
 
 # 2d array (n x 4) of kinetic constants where each row is: ribo bind, ribo unbind, asRNA bind, asRNA unbind:
 sweep_kinetic_const = np.array(
@@ -411,7 +411,7 @@ for i in range(sweep_kinetic_const.shape[0]):
     # plot time spent at each spot on the rna
     plt.figure()
     plt.subplot(2,1,1)
-    bar_width = 1 / 1.5
+    bar_width = 0.25
     plt.bar(rna_loc, ribo_occ, bar_width, hold=True)
     plt.xlabel('Position along mRNA')
     plt.ylabel('Time spent occupied (s)')
@@ -419,7 +419,7 @@ for i in range(sweep_kinetic_const.shape[0]):
 
     # plot time spent at each spot on the rna
     plt.subplot(2,1,2)
-    bar_width = 0.75
+    bar_width = 0.25
     plt.bar(rna_loc, asrna_occ, bar_width, hold=True)
     plt.xlabel('Position along mRNA')
     plt.ylabel('Time spent occupied (s)')
