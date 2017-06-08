@@ -27,7 +27,7 @@ window_end_time = 21000
 sweep_kinetic_const = np.array(
     [
 
-    [0.1,0.1,0.1]
+    [0.1,0.1,0.1,0]
 
     ])
 

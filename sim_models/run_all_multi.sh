@@ -4,7 +4,7 @@
 #PBS -q pqtouldrid
 
 ## select Python script to run
-RUNFILE=1mR_inf.py
+RUNFILE=all_multi.py
 
 ## Copy from starting directory and move to space for running job:
 cp $PBS_O_WORKDIR/$RUNFILE $TMPDIR 
@@ -16,4 +16,4 @@ module load anaconda3/4.3.1
 python $TMPDIR/$RUNFILE 
 
 ## copy outputted graphs back to original directory job script is located in
-cp $TMPDIR/*.png $PBS_O_WORKDIR
+cp $TMPDIR/*.png $PBS_O_WORKDIR/all_multi_results
