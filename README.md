@@ -20,6 +20,7 @@
 
 1) Download appropriate Windows installer for <a href ='http://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html'>PuTTY</a> 
 2) Open PuTTY and log in to the server.
-3) Copy/modify .py files to model desired simulation parameters.
-4) Copy/modify runthis.sh for the desired .py script(s) you want to run. Recommended 1 runthis.sh per .py script.
-5) From home directory, add .sh scripts to queue on the command line (qsub runthis.sh) as many times for as many .sh scripts as you want. Alternatively: qsub *.sh will add all .sh scripts to queue. Command line: qstat to monitor jobs on the cluster.
+3) Navigate to desired simulation's directory
+4) Add .sh scripts to queue on the command line (qsub runthis.sh) as many times for as many .sh scripts as you want. Alternatively: qsub *.sh will add all .sh scripts to queue. Command line: qstat to monitor jobs on the cluster.
+
+NOTE: Parameter sweeps and relevant jobscripts for them are designed to only be run on a cluster due to computational time required. 
