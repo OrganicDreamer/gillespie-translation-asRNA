@@ -358,5 +358,5 @@ for i in range(sweep_kinetic_const.shape[0]):
     ####################################################
     # SAVE STEADY STATE TRACE DATA AND PARAMETERS FOR THIS ITERATION
 
-    save_file = str('%dinf_sweep1' %(os.getenv('PBS_ARRAY_INDEX')))
+    save_file = str('%dinf-sweep1' %(os.getenv('PBS_ARRAY_INDEX')))
     np.savez(save_file,steadytrace_mrna=steadytrace_mrna,steadytrace_ribo=steadytrace_ribo,steadytrace_asrna=steadytrace_asrna,steadytrace_time=steadytrace_time,final_mrna=final_mrna,final_ribo=final_ribo,final_time=final_time,steadykinetic_rates=steadykinetic_rates,window_start_time=window_start_time,window_end_time=window_end_time,transl_rate=transl_rate,sweep_fin_transl=sweep_fin_transl)

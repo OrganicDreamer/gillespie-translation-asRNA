@@ -5,7 +5,7 @@
 #PBS -J 0-49
 
 ## select Python script to run
-RUNFILE=1mR_inf_sweep1.py
+RUNFILE=1mR-inf-sweep1.py
 
 ## Copy from starting directory and move to space for running job and storing results:
 cp $PBS_O_WORKDIR/$RUNFILE $TMPDIR 
@@ -17,4 +17,4 @@ module load anaconda3/4.3.1
 python $TMPDIR/$RUNFILE 
 
 ## copy outputted data back to work directory results folder
-cp $TMPDIR/*.npz $WORK/1mR_inf_sweep1_results
+cp $TMPDIR/*.npz $WORK/1mR-inf-sweep1-results

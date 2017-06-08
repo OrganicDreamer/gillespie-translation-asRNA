@@ -18,7 +18,7 @@ num_param_iterations = 50
 for i in range(0,num_param_iterations):
 
     #load each iteration of the parameter sweep
-    param_iteration = np.load('1mR_inf_sweep1_results/%dinf_sweep1.npz' %(i))
+    param_iteration = np.load('1mR-inf-sweep1-results/%dinf-sweep1.npz' %(i))
     steadytrace_mrna=param_iteration['steadytrace_mrna']
     steadytrace_ribo = param_iteration['steadytrace_ribo']
     steadytrace_asrna = param_iteration['steadytrace_asrna']
@@ -100,7 +100,7 @@ for i in range(0,num_param_iterations):
 
     # save figure
     plt.tight_layout()
-    plt.savefig('Occupancy distribution, inf, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
+    plt.savefig('Occupancy distribution, inf iter%d, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(i,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
     ######################################################
@@ -139,7 +139,7 @@ for i in range(0,num_param_iterations):
 
     plt.tight_layout()
     plt.savefig(
-        'Sequestered ribosomes, inf, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
+        'Sequestered ribosomes, inf iter%d, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(i,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
     #####################################################
@@ -176,7 +176,7 @@ for i in range(0,num_param_iterations):
 
     # save figure
     plt.tight_layout()
-    plt.savefig('Completed Translations, inf, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
+    plt.savefig('Completed Translations, inf iter%d, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(i,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
     #####################################################
@@ -207,34 +207,34 @@ for i in range(0,num_param_iterations):
     # store result for this iteration
     plot_det_flux = np.append(plot_det_flux,det_flux)
 
-    ######################################################################
-    # GENERATE AND SAVE PARAMETER SWEEP PLOTS
-    plt.figure()
-    plt.plot(sweep_fin_transl,plot_queue_len)
-    plt.ylabel('Number of ribosomes in queue')
-    plt.xlabel('Slow codon translation rate')
-    plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Queue length vs. slow codon rate' % (
-    steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadykinetic_rates[3]))
+######################################################################
+# GENERATE AND SAVE PARAMETER SWEEP PLOTS
+plt.figure()
+plt.plot(sweep_fin_transl,plot_queue_len)
+plt.ylabel('Number of ribosomes in queue')
+plt.xlabel('Slow codon translation rate')
+plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Queue length vs. slow codon rate' % (
+steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadykinetic_rates[3]))
 
-    plt.tight_layout()
-    plt.savefig(
-    'Queue length sweep, inf, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (
-    window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
-    steadykinetic_rates[3]))  # save the figure to file
-    plt.close()  # close the figure
+plt.tight_layout()
+plt.savefig(
+'Queue length sweep, inf, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (
+window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
+steadykinetic_rates[3]))  # save the figure to file
+plt.close()  # close the figure
 
 
-    plt.figure()
-    plt.plot(sweep_fin_transl,plot_ribo_flux, 'b',label='Simulated flux', hold=True)
-    plt.plot(sweep_fin_transl,plot_det_flux,'r',label='Deterministic flux', hold=True)
-    plt.legend(loc='upper right')
-    plt.ylabel('Ribosome flux out')
-    plt.xlabel('Slow codon translation rate')
-    plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Flux vs. slow codon rate' % (
-    steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadykinetic_rates[3]))
+plt.figure()
+plt.plot(sweep_fin_transl,plot_ribo_flux, 'b',label='Simulated flux', hold=True)
+plt.plot(sweep_fin_transl,plot_det_flux,'r',label='Deterministic flux', hold=True)
+plt.legend(loc='upper right')
+plt.ylabel('Ribosome flux out')
+plt.xlabel('Slow codon translation rate')
+plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Flux vs. slow codon rate' % (
+steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadykinetic_rates[3]))
 
-    plt.tight_layout()
-    plt.savefig(
-    'Flux sweep, inf, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
-    steadykinetic_rates[3]))  # save the figure to file
-    plt.close()  # close the figure
+plt.tight_layout()
+plt.savefig(
+'Flux sweep, inf, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
+steadykinetic_rates[3]))  # save the figure to file
+plt.close()  # close the figure
