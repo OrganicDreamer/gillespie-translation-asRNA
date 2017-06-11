@@ -23,4 +23,4 @@
 3) Navigate to desired simulation's directory
 4) Add .sh scripts to queue on the command line (qsub runthis.sh) as many times for as many .sh scripts as you want. Alternatively: qsub *.sh will add all .sh scripts to queue. Command line: qstat to monitor jobs on the cluster.
 
-NOTE: Parameter sweeps and relevant jobscripts for them are designed to only be run on a cluster due to computational time required. 
+NOTE: Parameter sweeps are designed to only be run on a cluster due to computational time required. 
