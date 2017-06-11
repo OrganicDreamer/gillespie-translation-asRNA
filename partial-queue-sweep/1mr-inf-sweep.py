@@ -1,41 +1,42 @@
+import os
 import numpy as np
 import random, math
-import matplotlib as mpl
-mpl.use('Agg')
-import matplotlib.pyplot as plt
 
 #####################################
 #INITIALIZE ALL PARAMETERS HERE#####
 
-# set specific directory to save output graphs to if desired (remember to include final '/' in directory path
-save_dir = ''
-
-# 101 values describe the state of mRNA codons + RBS
+# values describe the state of mRNA codons + RBS
 length_mrna = 267
 initial_mrna = np.zeros(length_mrna)
 
-free_ribo = 6800
-free_asrna = 100000
+free_ribo = 1
+free_asrna = 1
 
 # time to presumably reach steady state:
-window_start_time = 20000
+window_start_time = 42200
 
 # final time to simulate until:
-window_end_time = 21000
+window_end_time = 43200
 
-# 2d array (n x 4) of kinetic constants where each row is: ribo bind, ribo unbind, asRNA bind:
+# 2d array (n x 4) of kinetic constants where each row is: ribo bind, ribo unbind, asRNA bind, asRNA unbind:
 sweep_kinetic_const = np.array(
     [
 
-    [0.1,0.1,0.1,0]
+    [0.1,0.1,0,0]
 
     ])
-
 
 # Translation initiation, elongation, completion rates
 start_transl = 0.0833333333333333
 transl_rate = 15
-fin_transl = transl_rate/1000
+
+# set of slow codon rate parameters to sweep over
+num_param_iterations = 50
+sweep_fin_transl = np.linspace(transl_rate/10000,transl_rate,num=num_param_iterations)
+
+# from set of parameters to sweep over set stop codon rate to specific value from parameter sweep
+ind_sweep_fin_transl = int(os.getenv('PBS_ARRAY_INDEX'))
+fin_transl = sweep_fin_transl[ind_sweep_fin_transl]
 
 # Array of values for translation elongation rates of specific codons on mRNA, not including stop codon or RBS:
 codon_transl_rates = np.full((length_mrna - 2), transl_rate)
@@ -43,12 +44,11 @@ codon_transl_rates = np.full((length_mrna - 2), transl_rate)
 # Set specific rate for specific codon(s), in this case 50th codon:
 codon_transl_rates[49] = transl_rate
 
-##########################################################################
-
-# sweep over different rows of kinetic constants when simulating model:
+####################################################################
+# sweep over different rows of kinetic constants when creating simulation model:
 for i in range(sweep_kinetic_const.shape[0]):
 
-    def gillespie_1mR_dyn(mrna_state,free_ribo_pool,free_asrna_pool,start_time,sim_time, start_transl, fin_transl, codon_transl_rates,asrna_unbind_rate,i = i):
+    def gillespie_1mR_stat(mrna_state,free_ribo_pool,free_asrna_pool,start_time,sim_time, start_transl, fin_transl, codon_transl_rates, i = i):
 
         # SETTING UP SIMULATION AND MODEL PARAMETERS
 
@@ -72,6 +72,7 @@ for i in range(sweep_kinetic_const.shape[0]):
         rib_unbind_rate = sweep_kinetic_const[i][1]
 
         k_asrna_bind = sweep_kinetic_const[i][2]
+        asrna_unbind_rate = sweep_kinetic_const[i][3]
 
         # Hold trajectory data:
         trace_asrna = np.array([current_asrna])
@@ -117,7 +118,7 @@ for i in range(sweep_kinetic_const.shape[0]):
 
                         # Free ribosome binds to RBS
                         possible_mrna[0] = 1
-                        possible_ribo = possible_ribo - 1
+                        possible_ribo = possible_ribo #- 1
                         possible_asrna = possible_asrna
 
                         # rate of the possible state change
@@ -144,7 +145,7 @@ for i in range(sweep_kinetic_const.shape[0]):
                     if current_asrna >= 1:
 
                         # Free asRNA binds to RBS
-                        possible_asrna = possible_asrna - 1
+                        possible_asrna = possible_asrna #- 1
                         possible_ribo = possible_ribo
                         possible_mrna[0] = -1
 
@@ -176,7 +177,7 @@ for i in range(sweep_kinetic_const.shape[0]):
 
                         # ribosome unbind from RBS
                         possible_mrna[0] = 0
-                        possible_ribo = possible_ribo + 1
+                        possible_ribo = possible_ribo #+ 1
                         possible_asrna = possible_asrna
 
                         # unbind from rbs: rate of possible state change
@@ -225,7 +226,7 @@ for i in range(sweep_kinetic_const.shape[0]):
 
                         # asRNA unbind from RBS
                         possible_mrna[0] = 0
-                        possible_asrna = possible_asrna + 1
+                        possible_asrna = possible_asrna #+ 1
                         possible_ribo = possible_ribo
 
                         # unbind from rbs: rate of possible state change
@@ -277,7 +278,7 @@ for i in range(sweep_kinetic_const.shape[0]):
 
                         # stop codon reached, release rbs: possible state change
                         possible_mrna[i] = 0
-                        possible_ribo = possible_ribo + 1
+                        possible_ribo = possible_ribo #+ 1
                         possible_asrna = possible_asrna
 
                         #rate of possible state change
@@ -351,208 +352,16 @@ for i in range(sweep_kinetic_const.shape[0]):
         return np.copy(trace_mrna),np.copy(trace_ribo),np.copy(trace_asrna),np.copy(trace_time), np.copy(current_mrna),current_ribo,current_asrna,current_time,np.array([k_rib_bind,rib_unbind_rate,k_asrna_bind,asrna_unbind_rate])
 
     #####################################################
-    # RUNNING SIMULATION
+    # RUNNING SIMULATION(ie. a single iteration of parameter sweep of slow codon rate):
 
-    # array to store steady state queue length over each iteration:
-    plot_queue_len = np.array([])
+    # simulate until steady state is reached
+    (trace_mrna, trace_ribo, trace_asrna,trace_time, steady_mrna, steady_ribo, steady_asrna, steady_time,kinetic_rates) = gillespie_1mR_stat(initial_mrna,free_ribo,free_asrna,0,window_start_time, start_transl, fin_transl, codon_transl_rates)
 
-    # store average flux of ribosomes in/out of queue at steady state:
-    plot_ribo_flux = np.array([])
+    # simulate from steady state onwards
+    (steadytrace_mrna, steadytrace_ribo,steadytrace_asrna, steadytrace_time,final_mrna, final_ribo,final_asrna,final_time,steadykinetic_rates) = gillespie_1mR_stat(steady_mrna,steady_ribo,steady_asrna,steady_time, window_end_time, start_transl, fin_transl, codon_transl_rates)
 
-    # Range of asRNA unbind rates to sweep over
-    sweep_asrna_unbind = np.linspace(sweep_kinetic_const[i][2]/1000,100*sweep_kinetic_const[i][2], num=50)
+    ####################################################
+    # SAVE STEADY STATE TRACE DATA AND PARAMETERS FOR THIS ITERATION
 
-    # parameter sweep slow codon rate:
-    for m in range(len(sweep_asrna_unbind)):
-
-        # simulate until steady state is reached
-        (trace_mrna, trace_ribo, trace_asrna,trace_time, steady_mrna, steady_ribo, steady_asrna, steady_time,kinetic_rates) = gillespie_1mR_dyn(initial_mrna,free_ribo,free_asrna,0,window_start_time, start_transl, fin_transl, codon_transl_rates,sweep_asrna_unbind[m])
-
-        # simulate from steady state onwards
-        (steadytrace_mrna, steadytrace_ribo,steadytrace_asrna, steadytrace_time,final_mrna, final_ribo,final_asrna,final_time,steadykinetic_rates) = gillespie_1mR_dyn(steady_mrna,steady_ribo,steady_asrna,steady_time, window_end_time, start_transl, fin_transl, codon_transl_rates, sweep_asrna_unbind[m])
-
-        #####################################################
-
-        # EXTRACTING PLOTS OF OCCUPANCY DISTRIBUTION
-
-        # vector to keep track to total time site on mRNA is occupied
-        ribo_occ = np.zeros(np.shape(final_mrna))
-        asrna_occ = np.zeros(np.shape(final_mrna))
-
-        # vector of all positions along mRNA
-        rna_loc = np.arange(1, len(final_mrna) + 1, 1)
-
-        # mRNA site occupancy by ribosome
-        #iterate over all states starting from 2nd state
-        for j in range(1, len(steadytrace_time)):
-
-            # time spent in previous state
-            time_in_state = steadytrace_time[j] - steadytrace_time[j - 1]
-
-            # extract the previous state's rna occupancy
-            state_of_rna = steadytrace_mrna[((j - 1) * len(final_mrna)): j * len(final_mrna)]
-
-            # record time that was spent with rbs/codons on the rna occupied
-            for k in range(len(state_of_rna)):
-
-                if state_of_rna[k] == 1:
-                    ribo_occ[k] = ribo_occ[k] + time_in_state
-
-                if state_of_rna[k] == -1:
-                    asrna_occ[k] = asrna_occ[k] + time_in_state
-
-        # plot time spent at each spot on the rna
-        plt.figure()
-        plt.subplot(2,1,1)
-        bar_width = 0.25
-        plt.bar(rna_loc, ribo_occ, bar_width, hold=True)
-        plt.xlabel('Position along mRNA')
-        plt.ylabel('Time spent occupied (s)')
-        plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Ribosome occupancy along mRNA' %(steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))
-
-        # plot time spent at each spot on the rna
-        plt.subplot(2,1,2)
-        bar_width = 0.25
-        plt.bar(rna_loc, asrna_occ, bar_width, hold=True)
-        plt.xlabel('Position along mRNA')
-        plt.ylabel('Time spent occupied (s)')
-        plt.title('asRNA occupancy along mRNA')
-
-        # save figure
-        plt.tight_layout()
-        plt.savefig('%sOccupancy distribution, finite, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
-        plt.close()  # close the figure
-        ######################################################
-
-        # EXTRACTIONG PLOTS OF FREE POOLS
-
-        # plot number of free ribosomes over time window
-        plt.figure()
-        plt.subplot(2, 1, 1)
-        plt.step(steadytrace_time, steadytrace_ribo, hold=True)
-        plt.xlabel('Time (s)')
-        plt.ylabel('Number of Free Ribosomes')
-        plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Free Ribosomes over time' %(steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))
-
-        # plot number of free asRNA over time window
-        plt.subplot(2, 1, 2)
-        plt.step(steadytrace_time,steadytrace_asrna,hold=True)
-        plt.xlabel('Time (s)')
-        plt.ylabel('Number of Free asRNA')
-        plt.title('Free asRNA over time')
-
-        # save figure
-        plt.tight_layout()
-        plt.savefig('%sFree pools, finite, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
-        plt.close()  # close the figure
-
-        #####################################################
-
-        # EXTRACTING COMPLETED TRANSLATIONS OVER TIME
-
-        # keeps track of number of completed translations at each time stamp
-        count_transl = np.zeros(1)
-
-        # extract count of completed translation
-        for j in range(1, len(steadytrace_time)):
-
-            # extract the state's stop codon
-            state_stop_codon = steadytrace_mrna[((j + 1) * len(final_mrna)) - 1]
-
-            # extract previous state's stop codon
-            prev_state_stop_codon = steadytrace_mrna[(j * len(final_mrna)) - 1]
-
-            # if a ribosome has left the codon
-            if state_stop_codon == 0 and prev_state_stop_codon == 1:
-
-                count_transl = np.append(count_transl, count_transl[len(count_transl)-1] + 1)
-
-            else:
-
-                count_transl = np.append(count_transl, count_transl[len(count_transl) - 1])
-
-        # plot number of completed translations over time
-        plt.figure()
-        plt.step(steadytrace_time, count_transl)
-        plt.ylabel('Number of completed mRNA translations')
-        plt.xlabel('Time (s)')
-        plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Translations completed over time interval' % (
-        steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadykinetic_rates[3]))
-
-        # save figure
-        plt.tight_layout()
-        plt.savefig('%sCompleted Translations, finite, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(save_dir,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
-        plt.close()  # close the figure
-
-        #####################################################
-        # CALCULATE QUEUE LENGTH
-
-        # find number of sequestered ribosomes on mRNA
-        seq_ribo = np.array([])
-
-        # count sequestered number of ribosomes over time
-        for j in range(0, len(steadytrace_time)):
-
-            # extract each state's rna occupancy
-            state_of_rna = steadytrace_mrna[
-                           (j * len(final_mrna)): (j + 1) * len(final_mrna)]
-
-            # initialize count of total ribosomes for the state
-            count_ribo = 0
-
-            # loop over state of rna
-            for k in range(len(state_of_rna)):
-
-                # total the number of ribosomes on the strand
-                if state_of_rna[k] == 1:
-                    count_ribo = count_ribo + 1
-
-            # log the number of ribosomes sequestered on the mRNA for this time interval
-            seq_ribo = np.append(seq_ribo, count_ribo)
-
-        # calculate time-weighted average of number of sequestered ribosomes (ie. queue length)
-        queue_len = 0
-
-        for x in range(1, len(steadytrace_time)):
-            time_weight = (steadytrace_time[x] - steadytrace_time[x - 1]) / (window_end_time - window_start_time)
-            queue_len = queue_len + seq_ribo[x] * time_weight
-
-        # store result for this iteration
-        plot_queue_len = np.append(plot_queue_len, queue_len)
-
-        ########################################
-        # CALCULATE RIBOSOME FLUX OUT (ie. IN)
-
-        # essentially the rate at which translations of mRNA are completed
-        ribo_flux = (count_transl[len(count_transl) - 1] - count_transl[0]) / (window_end_time - window_start_time)
-
-        # store result for this iteration
-        plot_ribo_flux = np.append(plot_ribo_flux, ribo_flux)
-
-    ######################################################################
-    # GENERATE AND SAVE PARAMETER SWEEP PLOTS
-    plt.figure()
-    plt.plot(sweep_asrna_unbind, plot_queue_len)
-    plt.ylabel('Number of ribosomes in queue')
-    plt.xlabel('asRNA unbinding rate')
-    plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f \n Queue length vs. asRNA unbinding rate' % (
-        steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2]))
-
-    plt.tight_layout()
-    plt.savefig(
-        '%sQueue length asrna sweep, fin, %fs, ribo bind %f, ribo unbind %f, asR bind %f.png' % (
-            save_dir, window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2]))  # save the figure to file
-    plt.close()  # close the figure
-
-    plt.figure()
-    plt.plot(sweep_asrna_unbind, plot_ribo_flux)
-    plt.ylabel('Completed mRNA translations')
-    plt.xlabel('asRNA unbinding rate')
-    plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f \n Translation vs asRNA unbinding rate' % (
-        steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2]))
-
-    plt.tight_layout()
-    plt.savefig(
-        '%sFlux asrna sweep, fin, %fs, ribo bind %f, ribo unbind %f, asR bind %f.png' % (
-            save_dir, window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2]))  # save the figure to file
-    plt.close()  # close the figure
+    save_file = str('%dinf-sweep' %(ind_sweep_fin_transl))
+    np.savez(save_file,steadytrace_mrna=steadytrace_mrna,steadytrace_ribo=steadytrace_ribo,steadytrace_asrna=steadytrace_asrna,steadytrace_time=steadytrace_time,final_mrna=final_mrna,final_ribo=final_ribo,final_time=final_time,steadykinetic_rates=steadykinetic_rates,window_start_time=window_start_time,window_end_time=window_end_time,transl_rate=transl_rate,sweep_fin_transl=sweep_fin_transl)

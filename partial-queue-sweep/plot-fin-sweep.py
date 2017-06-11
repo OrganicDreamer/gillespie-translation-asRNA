@@ -18,7 +18,7 @@ num_param_iterations = 50
 for i in range(0,num_param_iterations):
 
     #load each iteration of the parameter sweep
-    param_iteration = np.load('1mR-inf-sweep1-results/%dinf-sweep1.npz' %(i))
+    param_iteration = np.load('%dfin-sweep.npz' %(i))
     steadytrace_mrna=param_iteration['steadytrace_mrna']
     steadytrace_ribo = param_iteration['steadytrace_ribo']
     steadytrace_asrna = param_iteration['steadytrace_asrna']
@@ -100,7 +100,7 @@ for i in range(0,num_param_iterations):
 
     # save figure
     plt.tight_layout()
-    plt.savefig('Occupancy distribution, inf iter%d, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(i,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
+    plt.savefig('Occupancy distribution, fin iter%d, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(i,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
     ######################################################
@@ -139,7 +139,32 @@ for i in range(0,num_param_iterations):
 
     plt.tight_layout()
     plt.savefig(
-        'Sequestered ribosomes, inf iter%d, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(i,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
+        'Sequestered ribosomes, fin iter%d, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(i,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
+    plt.close()  # close the figure
+
+    ######################################################
+    # EXTRACTING PLOTS OF FREE POOLS
+
+    # plot number of free ribosomes over time window
+    plt.figure()
+    plt.subplot(2, 1, 1)
+    plt.step(steadytrace_time, steadytrace_ribo, hold=True)
+    plt.xlabel('Time (s)')
+    plt.ylabel('Number of Free Ribosomes')
+    plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Free Ribosomes over time' % (
+    steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadykinetic_rates[3]))
+
+    # plot number of free asRNA over time window
+    plt.subplot(2, 1, 2)
+    plt.step(steadytrace_time, steadytrace_asrna, hold=True)
+    plt.xlabel('Time (s)')
+    plt.ylabel('Number of Free asRNA')
+    plt.title('Free asRNA over time')
+
+    # save figure
+    plt.tight_layout()
+    plt.savefig('Free pools, fin iter%d, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (i, window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
+    steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
     #####################################################
@@ -176,7 +201,7 @@ for i in range(0,num_param_iterations):
 
     # save figure
     plt.tight_layout()
-    plt.savefig('Completed Translations, inf iter%d, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(i,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
+    plt.savefig('Completed Translations, fin iter%d, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(i,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
     #####################################################
@@ -218,7 +243,7 @@ steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadyki
 
 plt.tight_layout()
 plt.savefig(
-'Queue length sweep, inf, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (
+'Queue length sweep, fin, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (
 window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
 steadykinetic_rates[3]))  # save the figure to file
 plt.close()  # close the figure
@@ -235,6 +260,6 @@ steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2], steadyki
 
 plt.tight_layout()
 plt.savefig(
-'Flux sweep, inf, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
+'Flux sweep, fin, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
 steadykinetic_rates[3]))  # save the figure to file
 plt.close()  # close the figure

@@ -13,10 +13,10 @@ free_ribo = 1
 free_asrna = 1
 
 # time to presumably reach steady state:
-window_start_time = 20000
+window_start_time = 42200
 
 # final time to simulate until:
-window_end_time = 21000
+window_end_time = 43200
 
 # 2d array (n x 4) of kinetic constants where each row is: ribo bind, ribo unbind, asRNA bind, asRNA unbind:
 sweep_kinetic_const = np.array(
@@ -30,8 +30,13 @@ sweep_kinetic_const = np.array(
 start_transl = 0.0833333333333333
 transl_rate = 15
 
+# set of slow codon rate parameters to sweep over
 num_param_iterations = 50
 sweep_fin_transl = np.linspace(transl_rate/10000,transl_rate,num=num_param_iterations)
+
+# from set of parameters to sweep over set stop codon rate to specific value from parameter sweep
+ind_sweep_fin_transl = int(os.getenv('PBS_ARRAY_INDEX'))
+fin_transl = sweep_fin_transl[ind_sweep_fin_transl]
 
 # Array of values for translation elongation rates of specific codons on mRNA, not including stop codon or RBS:
 codon_transl_rates = np.full((length_mrna - 2), transl_rate)
@@ -43,7 +48,7 @@ codon_transl_rates[49] = transl_rate
 # sweep over different rows of kinetic constants when creating simulation model:
 for i in range(sweep_kinetic_const.shape[0]):
 
-    def gillespie_1mR_stat(mrna_state,free_ribo_pool,free_asrna_pool,start_time,sim_time, start_transl, fin_transl, codon_transl_rates, i = i):
+    def gillespie_1mR_dyn(mrna_state,free_ribo_pool,free_asrna_pool,start_time,sim_time, start_transl, fin_transl, codon_transl_rates,i = i):
 
         # SETTING UP SIMULATION AND MODEL PARAMETERS
 
@@ -113,7 +118,7 @@ for i in range(sweep_kinetic_const.shape[0]):
 
                         # Free ribosome binds to RBS
                         possible_mrna[0] = 1
-                        possible_ribo = possible_ribo #- 1
+                        possible_ribo = possible_ribo - 1
                         possible_asrna = possible_asrna
 
                         # rate of the possible state change
@@ -140,7 +145,7 @@ for i in range(sweep_kinetic_const.shape[0]):
                     if current_asrna >= 1:
 
                         # Free asRNA binds to RBS
-                        possible_asrna = possible_asrna #- 1
+                        possible_asrna = possible_asrna - 1
                         possible_ribo = possible_ribo
                         possible_mrna[0] = -1
 
@@ -172,7 +177,7 @@ for i in range(sweep_kinetic_const.shape[0]):
 
                         # ribosome unbind from RBS
                         possible_mrna[0] = 0
-                        possible_ribo = possible_ribo #+ 1
+                        possible_ribo = possible_ribo + 1
                         possible_asrna = possible_asrna
 
                         # unbind from rbs: rate of possible state change
@@ -221,7 +226,7 @@ for i in range(sweep_kinetic_const.shape[0]):
 
                         # asRNA unbind from RBS
                         possible_mrna[0] = 0
-                        possible_asrna = possible_asrna #+ 1
+                        possible_asrna = possible_asrna + 1
                         possible_ribo = possible_ribo
 
                         # unbind from rbs: rate of possible state change
@@ -273,7 +278,7 @@ for i in range(sweep_kinetic_const.shape[0]):
 
                         # stop codon reached, release rbs: possible state change
                         possible_mrna[i] = 0
-                        possible_ribo = possible_ribo #+ 1
+                        possible_ribo = possible_ribo + 1
                         possible_asrna = possible_asrna
 
                         #rate of possible state change
@@ -350,13 +355,13 @@ for i in range(sweep_kinetic_const.shape[0]):
     # RUNNING SIMULATION(ie. a single iteration of parameter sweep of slow codon rate):
 
     # simulate until steady state is reached
-    (trace_mrna, trace_ribo, trace_asrna,trace_time, steady_mrna, steady_ribo, steady_asrna, steady_time,kinetic_rates) = gillespie_1mR_stat(initial_mrna,free_ribo,free_asrna,0,window_start_time, start_transl, sweep_fin_transl[os.getenv('PBS_ARRAY_INDEX')], codon_transl_rates)
+    (trace_mrna, trace_ribo, trace_asrna,trace_time, steady_mrna, steady_ribo, steady_asrna, steady_time,kinetic_rates) = gillespie_1mR_dyn(initial_mrna,free_ribo,free_asrna,0,window_start_time, start_transl, fin_transl, codon_transl_rates)
 
     # simulate from steady state onwards
-    (steadytrace_mrna, steadytrace_ribo,steadytrace_asrna, steadytrace_time,final_mrna, final_ribo,final_asrna,final_time,steadykinetic_rates) = gillespie_1mR_stat(steady_mrna,steady_ribo,steady_asrna,steady_time, window_end_time, start_transl, sweep_fin_transl[os.getenv('PBS_ARRAY_INDEX')], codon_transl_rates)
+    (steadytrace_mrna, steadytrace_ribo,steadytrace_asrna, steadytrace_time,final_mrna, final_ribo,final_asrna,final_time,steadykinetic_rates) = gillespie_1mR_dyn(steady_mrna,steady_ribo,steady_asrna,steady_time, window_end_time, start_transl, fin_transl, codon_transl_rates)
 
     ####################################################
     # SAVE STEADY STATE TRACE DATA AND PARAMETERS FOR THIS ITERATION
 
-    save_file = str('%dinf-sweep1' %(os.getenv('PBS_ARRAY_INDEX')))
+    save_file = str('%dfin-sweep' %(ind_sweep_fin_transl))
     np.savez(save_file,steadytrace_mrna=steadytrace_mrna,steadytrace_ribo=steadytrace_ribo,steadytrace_asrna=steadytrace_asrna,steadytrace_time=steadytrace_time,final_mrna=final_mrna,final_ribo=final_ribo,final_time=final_time,steadykinetic_rates=steadykinetic_rates,window_start_time=window_start_time,window_end_time=window_end_time,transl_rate=transl_rate,sweep_fin_transl=sweep_fin_transl)
