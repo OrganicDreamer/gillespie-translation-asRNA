@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 length_mrna = 267
 initial_mrna = np.zeros(length_mrna)
 
-free_ribo = 1
-free_asrna = 1
+free_ribo = 6800
+free_asrna = 6800
 
 # time to presumably reach steady state:
 window_start_time = 20000
@@ -522,5 +522,5 @@ for i in range(sweep_kinetic_const.shape[0]):
 
     #######################################
     # STORE FLUX AND QUEUE LENGTH
-    np.savez(str('inf-asrna-bind-%f-unbind-%f' % (steadykinetic_rates[2], steadykinetic_rates[3])), phi0=ribo_flux,
+    np.savez('inf-asrna', phi0=ribo_flux,
              queue_len=queue_len, as_bind=steadykinetic_rates[2], as_unbind=steadykinetic_rates[3])

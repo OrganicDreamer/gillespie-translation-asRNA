@@ -9,14 +9,14 @@ import random, math
 length_mrna = 267
 initial_mrna = np.zeros(length_mrna)
 
-free_ribo = 1
-free_asrna = 1
+free_ribo = 6800
+free_asrna = 6800
 
 # time to presumably reach steady state:
-window_start_time = 42200
+window_start_time = 10000
 
 # final time to simulate until:
-window_end_time = 43200
+window_end_time = 11000
 
 # 2d array (n x 4) of kinetic constants where each row is: ribo bind, ribo unbind, asRNA bind, asRNA unbind:
 sweep_kinetic_const = np.array(
