@@ -142,6 +142,45 @@ for i in range(0,num_param_iterations):
         'Sequestered ribosomes, fin iter%d, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' %(i,window_end_time,steadykinetic_rates[0],steadykinetic_rates[1],steadykinetic_rates[2],steadykinetic_rates[3]))  # save the figure to file
     plt.close()  # close the figure
 
+    ##########################################################
+    #EXTRACTING GRAPH OF QUEUE LENGTH DISTRIBUTION
+
+    # find number of unique queue lengths
+    uni_queue_len = np.unique(seq_ribo)
+
+    # vector to hold time spent by strand with specific size of queue
+    queue_len_occ = np.zeros(len(uni_queue_len))
+
+    # find accumulated time spent with strand having these queue lengths
+    for j in range(1,len(steadytrace_time)):
+
+        # time spent in previous state
+        time_in_state = steadytrace_time[j] - steadytrace_time[j - 1]
+
+        # queue length during time spent in previous state
+        seq_ribo_in_state = seq_ribo[j-1]
+
+        for k in range(len(uni_queue_len)):
+
+            if seq_ribo_in_state == uni_queue_len[k]:
+
+                queue_len_occ[k] = queue_len_occ[k] + time_in_state
+
+    # plot accumulated time over steady state period that mRNA has
+    plt.figure()
+    bar_width = 0.75
+    plt.bar(uni_queue_len,queue_len_occ,bar_width)
+    plt.xlabel('Queue length (ribosomes)')
+    plt.ylabel('Accumulated time over steady state period (s)')
+    plt.title('Distribution of queue length over steady state')
+
+    # save figure
+    plt.tight_layout()
+    plt.savefig(
+        'Queue Length Distribution fin iter%d, %fs, ribo bind %f, ribo unbind %f, asR bind %f, asR unbind %f.png' % (i, window_end_time, steadykinetic_rates[0], steadykinetic_rates[1], steadykinetic_rates[2],
+    steadykinetic_rates[3]))  # save the figure to file
+    plt.close()  # close the figure
+
     ######################################################
     # EXTRACTING PLOTS OF FREE POOLS
 
