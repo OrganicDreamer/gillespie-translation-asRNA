@@ -32,7 +32,7 @@ transl_rate = 15
 
 # set of slow codon rate parameters to sweep over
 num_param_iterations = 50
-sweep_fin_transl = np.linspace(transl_rate/10000,transl_rate,num=num_param_iterations)
+sweep_fin_transl = np.linspace(start_transl/10000,start_transl,num=num_param_iterations)
 
 # from set of parameters to sweep over set stop codon rate to specific value from parameter sweep
 ind_sweep_fin_transl = int(os.getenv('PBS_ARRAY_INDEX'))

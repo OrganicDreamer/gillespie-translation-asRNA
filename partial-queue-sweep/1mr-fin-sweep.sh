@@ -1,6 +1,6 @@
 #!/bin/bash
-#PBS -l walltime=06:00:00
-#PBS -l select=1:ncpus=1:mem=12gb
+#PBS -l walltime=72:00:00
+#PBS -l select=1:ncpus=1:mem=24gb
 #PBS -J 0-49
 
 ## select Python script to run
