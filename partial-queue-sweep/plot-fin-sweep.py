@@ -13,9 +13,13 @@ plot_ribo_flux = np.array([])
 plot_det_flux = np.array([])
 
 num_param_iterations = 50
+param_iters = range(0,num_param_iterations)
+param_itersfin12h = np.concatenate((param_iters[0:27],param_iters[29:32],param_iters[33:35],param_iters[36:38]))
+param_itersfin6h = np.concatenate((param_iters[0:29],param_iters[30:38]))
+plot_param_iters = np.copy(param_itersfin12h)
 
 # iterate over parameter sweep
-for i in range(0,num_param_iterations):
+for i in plot_param_iters:
 
     #load each iteration of the parameter sweep
     param_iteration = np.load('%dfin-sweep.npz' %(i))
@@ -273,8 +277,17 @@ for i in range(0,num_param_iterations):
 
 ######################################################################
 # GENERATE AND SAVE PARAMETER SWEEP PLOTS
+
+plot_sweep_fin_transl = np.array([])
+
+# loop over parameter sweep
+for i in plot_param_iters:
+
+    # fill vector with parameters to be plotted for
+    plot_sweep_fin_transl = np.append(plot_sweep_fin_transl,sweep_fin_transl[i])
+
 plt.figure()
-plt.plot(sweep_fin_transl,plot_queue_len)
+plt.plot(plot_sweep_fin_transl,plot_queue_len)
 plt.ylabel('Number of ribosomes in queue')
 plt.xlabel('Slow codon translation rate')
 plt.title('Ribo bind: %f, unbind: %f \n asRNA bind: %f, unbind: %f \n Queue length vs. slow codon rate' % (
@@ -289,8 +302,8 @@ plt.close()  # close the figure
 
 
 plt.figure()
-plt.plot(sweep_fin_transl,plot_ribo_flux, 'b',label='Simulated flux', hold=True)
-plt.plot(sweep_fin_transl,plot_det_flux,'r',label='Deterministic flux', hold=True)
+plt.plot(plot_sweep_fin_transl,plot_ribo_flux, 'b',label='Simulated flux', hold=True)
+plt.plot(plot_sweep_fin_transl,plot_det_flux,'r',label='Deterministic flux', hold=True)
 plt.legend(loc='upper right')
 plt.ylabel('Ribosome flux out')
 plt.xlabel('Slow codon translation rate')
