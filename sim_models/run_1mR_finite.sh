@@ -6,6 +6,9 @@
 ## select Python script to run
 RUNFILE=1mR_finite.py
 
+## create/overwrite directory to store results
+mkdir -p $PBS_O_WORKDIR/1mR_finite_results
+
 ## Copy from starting directory and move to space for running job:
 cp $PBS_O_WORKDIR/$RUNFILE $TMPDIR 
 
