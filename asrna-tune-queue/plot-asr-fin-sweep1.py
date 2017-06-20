@@ -69,7 +69,7 @@ plt.figure()
 plt.scatter(results[:,1],results[:,0])
 plt.ylabel('asRNA binding rate (1/(asRNA mol * s))')
 plt.xlabel('asRNA unbinding rate (1/s)')
-plt.title('asRNA binding vs. asRNA unbinding at an equal or increased rate of protein production')
+plt.title('At an equal or increased rate of protein production')
 plt.tight_layout()
 plt.savefig(
 'fin-final5.png')  # save the figure to file
