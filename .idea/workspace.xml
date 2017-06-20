@@ -11,7 +11,28 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="plot-asr-inf-sweep1.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/asrna-tune-queue/plot-asr-inf-sweep1.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="247">
+              <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="75" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="plot-asr-fin-sweep1.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/asrna-tune-queue/plot-asr-fin-sweep1.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="610">
+              <caret line="74" column="4" lean-forward="false" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -108,12 +129,12 @@
         <option value="$PROJECT_DIR$/asrna-tune-queue/manual-sweep/plot-asr-fin-sweep.py" />
         <option value="$PROJECT_DIR$/asrna-tune-queue/gen-inf-sweep-params1.py" />
         <option value="$PROJECT_DIR$/asrna-tune-queue/asr-inf-sweep1.py" />
-        <option value="$PROJECT_DIR$/asrna-tune-queue/plot-asr-inf-sweep1.py" />
-        <option value="$PROJECT_DIR$/asrna-tune-queue/plot-asr-fin-sweep1.py" />
         <option value="$PROJECT_DIR$/asrna-tune-queue/sel-asr-fin-sweep1.py" />
         <option value="$PROJECT_DIR$/asrna-tune-queue/sel-asr-inf-sweep1.py" />
         <option value="$PROJECT_DIR$/partial-queue-sweep/plot-inf-sweep.py" />
         <option value="$PROJECT_DIR$/partial-queue-sweep/plot-fin-sweep.py" />
+        <option value="$PROJECT_DIR$/asrna-tune-queue/plot-asr-inf-sweep1.py" />
+        <option value="$PROJECT_DIR$/asrna-tune-queue/plot-asr-fin-sweep1.py" />
       </list>
     </option>
   </component>
@@ -138,8 +159,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -162,12 +181,14 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="partial-queue-sweep" />
+              <option name="myItemId" value="asrna-tune-queue" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -313,9 +334,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-13" y="-13" width="2586" height="1386" extended-state="6" />
+    <frame x="-13" y="-13" width="2586" height="1386" extended-state="7" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29894823" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30420712" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32949513" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24092117" sideWeight="0.50161815" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32772365" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -489,22 +511,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/asrna-tune-queue/plot-asr-inf-sweep1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="643">
-          <caret line="73" column="31" lean-forward="false" selection-start-line="73" selection-start-column="31" selection-end-line="73" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/asrna-tune-queue/manual-sweep/plot-asr-inf-sweep.py" />
     <entry file="file://$PROJECT_DIR$/asrna-tune-queue/manual-sweep/plot-asr-fin-sweep.py" />
-    <entry file="file://$PROJECT_DIR$/asrna-tune-queue/plot-asr-fin-sweep1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="742">
-          <caret line="73" column="31" lean-forward="false" selection-start-line="73" selection-start-column="31" selection-end-line="73" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/asrna-tune-queue/sel-asr-fin-sweep1.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="66">
@@ -523,7 +531,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="406">
           <caret line="261" column="0" lean-forward="true" selection-start-line="261" selection-start-column="0" selection-end-line="261" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -531,6 +538,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="318">
           <caret line="287" column="0" lean-forward="true" selection-start-line="287" selection-start-column="0" selection-end-line="287" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/asrna-tune-queue/plot-asr-inf-sweep1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="75" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/asrna-tune-queue/plot-asr-fin-sweep1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="610">
+          <caret line="74" column="4" lean-forward="false" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
           <folding />
         </state>
       </provider>
